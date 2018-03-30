@@ -62,7 +62,7 @@ void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items){
 	gameover=0;
 	sobichia=4;
 	isoluongquaivat=0;
-	isoluongdan=26;
+	isoluongdan=1;
 	itrangthaidan=1;
 	maybay.td.y=ConW;
 	maybay.td.x=ConW/2;
@@ -416,24 +416,24 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items){
 	}
 	idemsoluongdan++;
 	if(itrangthaidan==1){
-		if(isoluongdan==0){
-			if(bodemso%80==0){
-				isoluongdan=26;
+		if(idemsoluongdan%4==0){
+			if(isoluongdan<1){
+				isoluongdan++;
 			}
-		}
+		}	
 	}else{
 		if(itrangthaidan==2){
-			if(idemsoluongdan%5==0){
-			if(isoluongdan<1){
-				isoluongdan++;
-			}
-		}
+			if(idemsoluongdan%6==0){
+			    if(isoluongdan<1){
+				   isoluongdan++;
+			    }
+		    }
 		}else{
-			if(idemsoluongdan%8==0){
-			if(isoluongdan<1){
-				isoluongdan++;
-			}
-		}
+		    if(idemsoluongdan%8==0){
+			   if(isoluongdan<1){
+				  isoluongdan++;
+			   }
+		    }
 		}
 	}
 	
