@@ -39,28 +39,13 @@ struct Dan{
 	MayBay mb[30];
 };
 
-struct Heart{
-	HinhDang hd;
-	ToaDo td;
-};
-
-struct Shield{
-	HinhDang hd;
-	ToaDo td;
-};
-
-struct Bullet{
-	HinhDang hd;
-	ToaDo td;
-};
-
 struct Items{
-	Heart h;
-	Shield s;
-	Bullet b;
+	MayBay h;//heart
+	MayBay s;//shield
+	MayBay b;//bullet
 };
 
-void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items,MayBayTank&maybaytank){
+void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items,MayBayTank&maybaytank,MayBayTank&maybayban,Dan&dandich){
 	diem=0;
 	maybaylife=3;
 	gameover=0;
@@ -77,7 +62,7 @@ void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items,MayBayTa
 	    maybaydich.mb[i].td.y=2;
 		strcpy(maybaydich.mb[i].hd.a,"~|-|~");
 		dan.mb[i].td.x=40;
-		dan.mb[i].td.y=3;
+		dan.mb[i].td.y=2;
 		strcpy(dan.mb[i].hd.a,"^");
 		strcpy(dan.mb[i].hd.b,"| |");
 		strcpy(dan.mb[i].hd.c,"|||||");
@@ -85,6 +70,12 @@ void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items,MayBayTa
 		maybaytank.mb[i].td.y=4;
 		strcpy(maybaytank.mb[i].hd.a,"~|_-_|~");
 		bmautank[i]=6;
+		maybayban.mb[i].td.x=50;
+		maybayban.mb[i].td.y=6;
+		strcpy(maybayban.mb[i].hd.a,"~|!|~");
+		dandich.mb[i].td.x=50;
+		dandich.mb[i].td.y=8;
+		strcpy(dandich.mb[i].hd.a,".");
 	}
 	strcpy(items.h.hd.c,"Y");
 	strcpy(items.s.hd.c,"Q");
@@ -97,7 +88,7 @@ void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items,MayBayTa
 	items.b.td.y=5;
 }
 
-void HienThi(MayBay&maybay,MayBayDich & maybaydich,Dan& dan,Items & items,MayBayTank&maybaytank){
+void HienThi(MayBay&maybay,MayBayDich & maybaydich,Dan& dan,Items & items,MayBayTank&maybaytank,MayBayTank&maybayban,Dan&dandich){
 	system("cls");
 	SetColor(10);
 	for(i=0;i<=ConW;i++){
@@ -140,7 +131,9 @@ void HienThi(MayBay&maybay,MayBayDich & maybaydich,Dan& dan,Items & items,MayBay
 		}
 		if(maybaytank.mb[i].td.x>=0&&maybaytank.mb[i].td.x<=ConW-2&&maybaytank.mb[i].td.y>=0&&maybaytank.mb[i].td.y<=ConW){
 			gotoxy(maybaytank.mb[i].td.x,maybaytank.mb[i].td.y);
+			SetColor(13);
 			cout<<maybaytank.mb[i].hd.a;
+			SetColor(15);
 		}
 		if(dan.mb[i].td.x>=0&&dan.mb[i].td.x<=ConW+1&&dan.mb[i].td.y>=0&&dan.mb[i].td.y<=ConW){
 			gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
@@ -154,6 +147,18 @@ void HienThi(MayBay&maybay,MayBayDich & maybaydich,Dan& dan,Items & items,MayBay
 			if(itrangthaidan==3){
 				cout<<dan.mb[i].hd.c;
 			}
+			SetColor(15);
+		}
+		if(maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
+			gotoxy(maybayban.mb[i].td.x,maybayban.mb[i].td.y);
+			SetColor(8);
+			cout<<maybayban.mb[i].hd.a;
+			SetColor(15);
+		}
+		if(dandich.mb[i].td.x>=0&&dandich.mb[i].td.x<=ConW&&dandich.mb[i].td.y<=0&&dandich.mb[i].td.y>=ConW){
+			gotoxy(dandich.mb[i].td.x,dandich.mb[i].td.y);
+			SetColor(14);
+			cout<<dandich.mb[i].hd.a;
 			SetColor(15);
 		}
 	}
@@ -227,7 +232,9 @@ void anitems(MayBay& maybay,Items & items){
    }
 }
 
-void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTank&maybaytank){
+void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTank&maybaytank,MayBayTank&maybayban,Dan&dandich){
+	//va cham items vs maybay
+   anitems(maybay,items);
 	//va cham dan
 	int l;
 	for(i=0;i<30;i++){
@@ -236,6 +243,8 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 		    int ddany=abs(maybaydich.mb[i].td.y-dan.mb[l].td.y);
 		    int ddantankx=maybaytank.mb[i].td.x-dan.mb[l].td.x;
 		    int ddantanky=maybaytank.mb[i].td.y-dan.mb[l].td.y;
+		    int ddanbanx=maybayban.mb[i].td.x-dan.mb[l].td.x;
+		    int ddanbany=maybayban.mb[i].td.y-dan.mb[l].td.y;
 		    if(itrangthaidan==1){
 		       if(ddany==0&&ddanx<=0&&ddanx>=-4){
 		    	    if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybaydich.mb[i].td.x>=0&&maybaydich.mb[i].td.x<=ConW&&maybaydich.mb[i].td.y>=0&&maybaydich.mb[i].td.y<=ConW){
@@ -244,7 +253,7 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 		    		maybaydich.mb[i].td.x=50;
 		    		maybaydich.mb[i].td.y=2;
 		    		dan.mb[l].td.x=40;
-		    		dan.mb[l].td.y=3;
+		    		dan.mb[l].td.y=2;
 		       }
 		       if(ddantanky==0&&ddantankx<=0&&ddantankx>=-6){
 		       	  if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybaytank.mb[i].td.x>=0&&maybaytank.mb[i].td.x<ConW-2&&maybaytank.mb[i].td.y>=0&&maybaytank.mb[i].td.y<ConW){
@@ -256,9 +265,18 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 		       	  	 	  maybaytank.mb[i].td.y=4;
 		       	  	      }  
 		       	  	      dan.mb[l].td.x=40;
-		       	  	 	  dan.mb[l].td.y=3;
+		       	  	 	  dan.mb[l].td.y=2;
 					 goto Nhap11; 
 		       	     }
+		       }
+		       if(ddanbany==0&&ddanbanx<=0&&ddanbanx>=-4){
+		       	if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
+		       		diem++;
+		       		maybayban.mb[i].td.x=50;
+		       	     maybayban.mb[i].td.y=6;
+		       	     dan.mb[i].td.x=40;
+		       	    dan.mb[i].td.y=2;
+		       	}
 		       }
 			   
 		    }
@@ -270,7 +288,7 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
       	    		maybaydich.mb[i].td.x=50;
 		    		maybaydich.mb[i].td.y=2;
 		    		dan.mb[l].td.x=40;
-		    		dan.mb[l].td.y=3;
+		    		dan.mb[l].td.y=2;
 		       }
 		       if(ddantanky==0&&ddantankx<=2&&ddantankx>=-6){
 		       	  if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybaytank.mb[i].td.x>=0&&maybaytank.mb[i].td.x<ConW&&maybaytank.mb[i].td.y>=0&&maybaytank.mb[i].td.y<ConW){
@@ -282,9 +300,18 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 		       	  	 	  maybaytank.mb[i].td.y=4;
 		       	  	      }  
 		       	  	      dan.mb[l].td.x=40;
-		       	  	 	  dan.mb[l].td.y=3;
+		       	  	 	  dan.mb[l].td.y=2;
 					 goto Nhap11; 
 		       	     }
+		       }
+		       if(ddanbany==0&&ddanbanx<=0&&ddanbanx>=-4){
+		       	if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
+		       		diem++;
+		       			maybayban.mb[i].td.x=50;
+		       			maybayban.mb[i].td.y=6;
+		       			dan.mb[i].td.x=40;
+		       	        dan.mb[i].td.y=2;
+		       	}
 		       }
 		    }	
 		    if(itrangthaidan==3){
@@ -295,7 +322,7 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 		    		maybaydich.mb[i].td.x=50;
 		    		maybaydich.mb[i].td.y=2;
 		    		dan.mb[l].td.x=40;
-		    		dan.mb[l].td.y=3;
+		    		dan.mb[l].td.y=2;
 		       }
 		       if(ddantanky==0&&ddantankx<=4&&ddantankx>=-6){
 		       	  if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybaytank.mb[i].td.x>=0&&maybaytank.mb[i].td.x<ConW&&maybaytank.mb[i].td.y>=0&&maybaytank.mb[i].td.y<ConW){
@@ -311,6 +338,15 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 					 goto Nhap11; 
 		       	     }
 		       }
+		       if(ddanbany==0&&ddanbanx<=0&&ddanbanx>=-4){
+		       	if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
+		       		diem++;
+		       		maybayban.mb[i].td.x=50;
+		       		maybayban.mb[i].td.y=6;
+		       		dan.mb[i].td.x=40;
+		       	    dan.mb[i].td.y=3;
+		       	}
+		       }
 		    }	
 		}
 	}
@@ -321,6 +357,10 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 		   int dy=abs(maybay.td.y-maybaydich.mb[i].td.y);
 	       int dtankx=-maybay.td.x+maybaytank.mb[i].td.x;
 	       int dtanky=abs(maybay.td.y-maybaytank.mb[i].td.y);
+	       int ddandichx=maybay.td.x-dandich.mb[i].td.x;
+	       int ddandichy=maybay.td.y-dandich.mb[i].td.y;
+	       int dmaybaybanx=abs(maybay.td.x-maybayban.mb[i].td.x);
+	       int dmaybaybany=maybay.td.y-maybayban.mb[i].td.y;
 	      if(mangbaove==0){
 	      	    if(dx<=4&&dy==0){
 	       	      maybaylife--;
@@ -336,6 +376,32 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 			         }
 				    
 	              }
+	            if(ddandichx<=0&&ddandichx>=-4&&ddandichy==0){
+	            	maybaylife--;
+	            	if(itrangthaidan>1){
+	       	      	    itrangthaidan--;
+	       	            }
+	       	         if(itrangthaidan==2){
+	       	      	    isoluongdan=1;
+	       	            }
+	       	            mangbaove=100;
+		             if(maybaylife==0){
+		    	       gameover=1;
+			         }
+	            }
+				if(dmaybaybanx<=4&&dmaybaybany==0){
+					maybaylife--;
+	            	if(itrangthaidan>1){
+	       	      	    itrangthaidan--;
+	       	            }
+	       	         if(itrangthaidan==2){
+	       	      	    isoluongdan=1;
+	       	            }
+	       	            mangbaove=100;
+		             if(maybaylife==0){
+		    	       gameover=1;
+			         }
+				}  
 	            if(dtankx>=-6&&dtankx<=4&&dtanky==0){
 	       	      maybaylife--;
 	       	         if(itrangthaidan>1){
@@ -356,8 +422,6 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
    if(mangbaove>0){
    	mangbaove--;
    }
-   //va cham items vs maybay
-   anitems(maybay,items);
 }
 
 void shoot(MayBay& maybay,Dan& dan){
@@ -395,12 +459,13 @@ void shoot(MayBay& maybay,Dan& dan){
 			}
 		}
 		Nhap1:;
+		
 }
 
-void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTank&maybaytank){
+void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTank&maybaytank,MayBayTank&maybayban,Dan&dandich){
 	//xu ly may bay dich
+	int ingaunhien=rand()%20;
 	if(bodemso%sobichia==0){
-		int ingaunhien=rand()%20;
 	    if(ingaunhien%4==0){
 		   for(i=0;i<30;i++){
 		      if(maybaydich.mb[i].td.x>=0&&maybaydich.mb[i].td.x<=ConW&&maybaydich.mb[i].td.y>=0&&maybaydich.mb[i].td.y<=ConW){
@@ -413,29 +478,28 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 		}
 	}
 	
-	vacham(maybay,maybaydich,dan,items,maybaytank);
+	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	Nhap:;
 	
 		for(i=0;i<30;i++){
 		   if(maybaydich.mb[i].td.x>=0&&maybaydich.mb[i].td.x<=ConW&&maybaydich.mb[i].td.y>=0&&maybaydich.mb[i].td.y<=ConW){
 			maybaydich.mb[i].td.y++;
 		   }else{
-			     maybaydich.mb[i].td.x=40;
+			     maybaydich.mb[i].td.x=50;
 	             maybaydich.mb[i].td.y=2;
 		   }
 	    }
-	    vacham(maybay,maybaydich,dan,items,maybaytank);
+	    vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	}
 	//xu ly may bay tank
 	if(bodemso%sobichia==0){
-		int ingaunhien1=rand()%20;
-		if(ingaunhien1%10==0){
+		if(ingaunhien%10==0){
 			for(i=0;i<30;i++){
 				if(maybaytank.mb[i].td.x>=0&&maybaytank.mb[i].td.x<ConW-2&&maybaytank.mb[i].td.y>=0&&maybaytank.mb[i].td.y<ConW){
 				}else{
 					int ixuathien=rand()%24+1;
 					for(int e=0;e<30;e++){
-						if(maybaydich.mb[i].td.x>=ixuathien-2&&maybaydich.mb[i].td.x<=ixuathien+2&&maybaydich.mb[i].td.y==0){
+						if(maybaydich.mb[i].td.x>=0&&maybaydich.mb[i].td.x<=ConW&&maybaydich.mb[i].td.y<=3){
 							goto Nhap10;
 					    }
 					}
@@ -447,7 +511,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 			}
 		}
 		Nhap10:;
-		vacham(maybay,maybaydich,dan,items,maybaytank);
+		vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 		for(i=0;i<30;i++){
 			if(maybaytank.mb[i].td.x>=0&&maybaytank.mb[i].td.x<ConW-2&&maybaytank.mb[i].td.y>=0&&maybaytank.mb[i].td.y<ConW){
 				maybaytank.mb[i].td.y++;
@@ -457,24 +521,52 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 				bmautank[i]=6;
 			}
 		}
-		vacham(maybay,maybaydich,dan,items,maybaytank);
+		vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	}
+	//xu ly may bay ban
+	if(bodemso%(sobichia+3)==0){
+	    if(ingaunhien%17==0){
+		   for(i=0;i<30;i++){
+		      if(maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
+		      }else{
+		   	       maybayban.mb[i].td.x=rand()%ConW+1;
+		           maybayban.mb[i].td.y=0;
+		           isoluongquaivat++;
+		           goto Nhap20;
+		   }
+		}
+	}
+	
+	Nhap20:;
+		vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
+		for(i=0;i<30;i++){
+		   if(maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
+			maybayban.mb[i].td.y++;
+		   }else{
+			     maybayban.mb[i].td.x=50;
+	             maybayban.mb[i].td.y=6;
+		   }
+	    }
+	    vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
+	}
+	
+	
 	shoot(maybay,dan);
 	bodemso++;
 	//toc do  game;
 	if(bodemso==10000){
-		bodemso=0;
+		bodemso=1;
 	}
-	if(isoluongquaivat>130&&isoluongquaivat<=160){
-		sobichia=3;
+	if(isoluongquaivat>=0&&isoluongquaivat<=160){
+		sobichia=8;
 	}
 	if(isoluongquaivat>160&&isoluongquaivat<=1120){
-		sobichia=2;
+		sobichia=3;
 	}
 	if(isoluongquaivat>1120){
-		sobichia=1;
+		sobichia=2;
 	}
-	vacham(maybay,maybaydich,dan,items,maybaytank);
+	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	//tao vat pham
 	if((isoluongquaivat+1)%30==0){
 		iitems=rand()%3+1;
@@ -492,7 +584,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 		}
 		isoluongquaivat++;
 	}
-	vacham(maybay,maybaydich,dan,items,maybaytank);
+	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	if(bodemso%4==0){
 		if(items.h.td.x>=0&&items.h.td.x<=ConW+1&&items.h.td.y>=0&&items.h.td.y<=ConW){
 		   items.h.td.y++;	
@@ -514,7 +606,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 		}
 	}
 	
-	vacham(maybay,maybaydich,dan,items,maybaytank);
+	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	
 	// dan di chuyen
 	
@@ -526,6 +618,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 			dan.mb[i].td.y=2;
 		}
 	}
+	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	idemsoluongdan++;
 	if(itrangthaidan==1){
 		if(idemsoluongdan%3==0){
@@ -552,8 +645,26 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 	if(idemsoluongdan==100000){
 		idemsoluongdan=0;
 	}
+	//dan dich ban
+	if(bodemso%5==0){
+	for(i=0;i<30;i++){
+		
+			if(dandich.mb[i].td.x<=ConW+1&&dandich.mb[i].td.x>=0&&dandich.mb[i].td.y>=0&&dandich.mb[i].td.y<=ConW){
+				dandich.mb[i].td.y++;
+			}else{
+				dandich.mb[i].td.x=50;
+				dandich.mb[i].td.y=8;
+				
+			    if(maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){		
+					   dandich.mb[i].td.x=maybayban.mb[i].td.x;
+					   dandich.mb[i].td.y=maybayban.mb[i].td.y+1;
+				    
+				}
+			}
+		}
+	}
 	Nhap6:;
-	vacham(maybay,maybaydich,dan,items,maybaytank);
+	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 }
 
 int main(){
@@ -563,13 +674,15 @@ int main(){
 	MayBay maybay;
 	MayBayDich maybaydich;
 	MayBayTank maybaytank;
+	MayBayTank maybayban;
 	Dan dan;
+	Dan dandich;
 	Items items;
-	KhoiTao(maybay,maybaydich,dan,items,maybaytank);
+	KhoiTao(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	while(1){
 		DieuKhien(maybay);
-		HienThi(maybay,maybaydich,dan,items,maybaytank);
-		xuly(maybay, maybaydich,dan,items,maybaytank);
+		HienThi(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
+		xuly(maybay, maybaydich,dan,items,maybaytank,maybayban,dandich);
 		Sleep(25);
 		if(gameover==1){
 			goto lost;
@@ -577,7 +690,7 @@ int main(){
 	}
 	lost:;
 	system("cls");
-	HienThi(maybay,maybaydich,dan,items,maybaytank);
+	HienThi(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 	gotoxy(10,13);
 	SetColor(11);
 	cout<<"you lost ";
