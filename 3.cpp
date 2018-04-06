@@ -155,7 +155,7 @@ void HienThi(MayBay&maybay,MayBayDich & maybaydich,Dan& dan,Items & items,MayBay
 			cout<<maybayban.mb[i].hd.a;
 			SetColor(15);
 		}
-		if(dandich.mb[i].td.x>=0&&dandich.mb[i].td.x<=ConW&&dandich.mb[i].td.y<=0&&dandich.mb[i].td.y>=ConW){
+		if(dandich.mb[i].td.x>=0&&dandich.mb[i].td.x<=ConW+1&&dandich.mb[i].td.y>=0&&dandich.mb[i].td.y<=ConW){
 			gotoxy(dandich.mb[i].td.x,dandich.mb[i].td.y);
 			SetColor(14);
 			cout<<dandich.mb[i].hd.a;
@@ -338,7 +338,7 @@ void vacham(MayBay& maybay,MayBayDich& maybaydich,Dan & dan,Items&items,MayBayTa
 					 goto Nhap11; 
 		       	     }
 		       }
-		       if(ddanbany==0&&ddanbanx<=0&&ddanbanx>=-4){
+		       if(ddanbany==0&&ddanbanx<=4&&ddanbanx>=-4){
 		       	if(dan.mb[l].td.x>=0&&dan.mb[l].td.x<=ConW+1&&dan.mb[l].td.y>=0&&dan.mb[l].td.y<=ConW&&maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){
 		       		diem++;
 		       		maybayban.mb[i].td.x=50;
@@ -656,7 +656,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 				dandich.mb[i].td.y=8;
 				
 			    if(maybayban.mb[i].td.x>=0&&maybayban.mb[i].td.x<=ConW&&maybayban.mb[i].td.y>=0&&maybayban.mb[i].td.y<=ConW){		
-					   dandich.mb[i].td.x=maybayban.mb[i].td.x;
+					   dandich.mb[i].td.x=maybayban.mb[i].td.x+2;
 					   dandich.mb[i].td.y=maybayban.mb[i].td.y+1;
 				    
 				}
@@ -683,10 +683,10 @@ int main(){
 		DieuKhien(maybay);
 		HienThi(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
 		xuly(maybay, maybaydich,dan,items,maybaytank,maybayban,dandich);
-		Sleep(25);
 		if(gameover==1){
 			goto lost;
 		}
+		Sleep(15);
 	}
 	lost:;
 	system("cls");
