@@ -5,7 +5,6 @@
 #include "Util.h"
 #include<ctime>
 #include<stdio.h>
-#include<graphics.h>
 #define ConW 25
 #define ConH 25
 
@@ -53,7 +52,7 @@ void KhoiTao(MayBay& maybay,MayBayDich & maybaydich,Dan&dan,Items&items,MayBayTa
 	isoluongquaivat=0;
 	isoluongdan=1;
 	itrangthaidan=1;
-	bmauboss=10;
+	bmauboss=100;
 	checkboss=0;
 	maybay.td.y=ConW;
 	maybay.td.x=ConW/2;
@@ -119,7 +118,7 @@ void HienThi(MayBay&maybay,MayBayDich & maybaydich,Dan& dan,Items & items,MayBay
 	gotoxy(40,20);
 	cout<<"Score : "<<diem*100;
 	gotoxy(40,18);
-	cout<<"So luong dan dang co : "<<isoluongdan;
+	cout<<"So luong dan dang co : "<<isoluongdan<<" "<<bmauboss;
 	gotoxy(40,19);
 	cout<<"Life : ";
 	for(i=0;i<maybaylife;i++){
@@ -688,7 +687,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 	}
 	Nhap6:;
 	vacham(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich);
-	if(isoluongquaivat==30){
+	if(isoluongquaivat%50==0&&isoluongquaivat!=0){
 		checkboss=1;
 	}
 }
@@ -748,6 +747,13 @@ void vachamboss(MayBay&boss,MayBay&maybay,Dan&dan){
 					bmauboss--;
 				}
 			}
+			if(itrangthaidan==2){
+				if(ddbossy==0&&ddbossx<=2&&ddbossy>=-9){
+					dan.mb[i].td.x=40;
+					dan.mb[i].td.y=2;
+					bmauboss=bmauboss-10;
+				}
+			}
 		}
 	}
 }
@@ -757,12 +763,6 @@ void xulyboss(MayBay&maybay,MayBay&boss,Items&items,Dan&dan){
 	}else{
 		boss.td.x=3;
 		boss.td.y=3;
-	}
-	if(bmauboss==0){
-		boss.td.x=30;
-	    boss.td.y=3;
-		bmauboss=1000;
-		checkboss=0;
 	}
 	bossdichuyen(boss,maybay);
 	vachamboss(boss,maybay,dan);
@@ -846,7 +846,7 @@ int main(){
 		if(gameover==1){
 			goto lost;
 		}
-		Sleep(15);
+		Sleep(40);
 		
 	}
 	//ban boss
@@ -856,17 +856,18 @@ int main(){
 		DieuKhien(maybay);
 		xulyboss(maybay,boss,items,dan);
 		HienThi(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich,boss);
-		if(bmauboss==0){
+		if(bmauboss<=0){
 			checkboss=0;
 			bmauboss=1000;
 			boss.td.x=30;
 			boss.td.y=3;
+			isoluongquaivat++;
 			goto Nhap40;
 		}
 		if(gameover==1){
 			goto lost;
 		}
-		Sleep(15);
+		Sleep(40);
 	}
 	//thua cuoc
 	lost:;
