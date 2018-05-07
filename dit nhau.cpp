@@ -11,6 +11,106 @@
 int i,j=0,isoluongdan,idemsoluongdan=0,gameover,maybaylife,mangbaove=0, diem,bodemso=0,sobichia,isoluongquaivat,iitems,itrangthaidan,bmautank[30],bmauboss,checkboss;
 using namespace std;
 
+void taovienchu(int y, int ma_mau){
+	SetColor(ma_mau);
+	gotoxy(8,y);
+	putchar(179);
+	gotoxy(21,y);
+	putchar(179);
+	for(i=1;i<=12;i++){
+		gotoxy(8+i,y-1);
+		putchar(196);
+		gotoxy(8+i,y+1);
+		putchar(196);
+		gotoxy(8,y-1);
+		putchar(218);
+		gotoxy(21,y-1);
+		putchar(191);
+		gotoxy(8,y+1);
+		putchar(192);
+		gotoxy(21,y+1);
+		putchar(217);
+	}
+}
+
+void menu(){
+	int itrangthaimenu=1;
+	// tao vien` doc
+	SetColor(10);
+	for(i=0;i<=ConW;i++){
+		printf("%c\n",179);
+	}
+	for(i=0;i<=ConH;i++){
+		gotoxy(ConH+5,i);
+		putchar(179);
+	}
+	// tao vien goc chu a
+	gotoxy(0,ConW+1);
+	putchar(192);
+	gotoxy(ConH+5,ConW+1);
+	putchar(217);
+	// tao vien ngang
+	for(i=1;i<ConH+5;i++){
+		gotoxy(i,ConH+1);
+		putchar(196);
+	}
+	
+	// tao chu trong game
+	gotoxy(11,3);
+	cout<<"P L A N E";
+	gotoxy(13,5);
+	cout<<"~|O|~";
+	SetColor(13);
+	gotoxy(10,10);
+	cout<<"START GAME";
+	gotoxy(13,13);
+	cout<<"KEY ";
+	gotoxy(13,16);
+	cout<<"HELP";
+	while(1){
+		if (checkKey(KEY_UP)){
+			if(itrangthaimenu>1){
+				itrangthaimenu--;
+			}else{
+				itrangthaimenu=3;
+			}
+			goto Nhap;
+		}
+		if (checkKey(KEY_DOWN)){
+			if(itrangthaimenu<3){
+				itrangthaimenu++;
+			}else{
+				itrangthaimenu=1;
+			}
+			goto Nhap;
+		}
+		Nhap:;
+		if(itrangthaimenu==1){
+		   		taovienchu(10,12);
+	            taovienchu(13,14);
+	            taovienchu(16,14);
+	            if (checkKey(KEY_S)){
+	            	goto Nhap1;
+	            }
+		}
+		if(itrangthaimenu==2){
+		   		taovienchu(10,14);
+	            taovienchu(13,12);
+	            taovienchu(16,14);
+		}
+		if(itrangthaimenu==3){
+		   		taovienchu(10,14);
+	            taovienchu(13,14);
+	            taovienchu(16,12);
+		}
+		Sleep(100);
+	}
+	Nhap1:;
+	system("cls");
+}
+
+
+
 struct ToaDo{
 	int y,x;
 };
@@ -821,8 +921,9 @@ void xulyboss(MayBay&maybay,MayBay&boss,Items&items,Dan&dan){
 }
 
 int main(){
-	Nhap3:;
 	ShowCur(0);
+	menu();
+	Nhap3:;
 	//setFullScreen();
 	srand(time(NULL));
 	MayBay maybay;
@@ -867,7 +968,7 @@ int main(){
 		if(gameover==1){
 			goto lost;
 		}
-		Sleep(40);
+		Sleep(5);
 	}
 	//thua cuoc
 	lost:;
