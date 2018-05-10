@@ -6,6 +6,7 @@
 
 using namespace std;
 
+void loadgame();
 void menu();
 
 #endif

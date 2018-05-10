@@ -570,7 +570,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 		   	         maybayban.mb[i].td.x=rand()%ConW+1;
 		             maybayban.mb[i].td.y=0;
 		             gotoxy(maybayban.mb[i].td.x,maybayban.mb[i].td.y);
-			         SetColor(8);
+			         SetColor(11);
 			         cout<<maybayban.mb[i].hd.a;
 			         SetColor(15);
 		             isoluongquaivat++;
@@ -587,7 +587,7 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 		   	cout<<"     ";
 			maybayban.mb[i].td.y++;
 			gotoxy(maybayban.mb[i].td.x,maybayban.mb[i].td.y);
-			SetColor(8);
+			SetColor(11);
 			cout<<maybayban.mb[i].hd.a;
 			SetColor(15);
 			if(maybayban.mb[i].td.y==ConW+1){
@@ -821,7 +821,69 @@ void xuly(MayBay maybay,MayBayDich & maybaydich,Dan & dan,Items & items,MayBayTa
 	}
 }
 
-void bossdichuyen(MayBay&boss,MayBay&maybay,Dan&dandich){
+void vachamboss(MayBay&boss,MayBay&maybay,Dan&dan){
+	int dbossx=boss.td.x-maybay.td.x;
+	int dbossy=boss.td.y-maybay.td.y;
+	if(boss.td.x>=0&&boss.td.x<=ConW&&boss.td.y>=0&&boss.td.y<=ConW){
+		if(mangbaove==0){
+			if(dbossy>=0&&dbossy<=2&&dbossx>=-9&&dbossx<=4){
+			maybaylife--;
+			mangbaove=100;
+			if(maybaylife==0){
+		    	gameover=1;
+			   }
+			if(itrangthaidan>1){
+	       	    itrangthaidan--;
+	       	  }
+		    }
+		}
+	}
+	if(mangbaove>0){
+		mangbaove--;
+	}
+	// va cham dan vs boss
+	for(i=0;i<30;i++){
+		int ddbossx=boss.td.x-dan.mb[i].td.x;
+		int ddbossy=boss.td.y-dan.mb[i].td.y;
+		if(boss.td.x>=0&&boss.td.x<=ConW&&boss.td.y>=0&&boss.td.y<=ConW&&dan.mb[i].td.x>=0&&dan.mb[i].td.x<=ConW+1&&dan.mb[i].td.y>=0&&dan.mb[i].td.y<=ConW){
+			if(itrangthaidan==1){
+				if(ddbossy==0&&ddbossx<=0&&ddbossy>=-9){
+					gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
+		    		cout<<" ";
+					dan.mb[i].td.x=40;
+					dan.mb[i].td.y=2;
+					gotoxy(boss.td.x,boss.td.y);
+			        cout<<boss.hd.a;
+					bmauboss--;
+				}
+			}
+			if(itrangthaidan==2){
+				if(ddbossy==0&&ddbossx<=2&&ddbossy>=-9){
+					gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
+		    		cout<<"   ";
+					dan.mb[i].td.x=40;
+					dan.mb[i].td.y=2;
+					gotoxy(boss.td.x,boss.td.y);
+			        cout<<boss.hd.a;
+					bmauboss=bmauboss-10;
+				}
+			}
+			if(itrangthaidan==3){
+				if(ddbossy==0&&ddbossx<=2&&ddbossy>=-9){
+					gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
+		    		cout<<"     ";
+					dan.mb[i].td.x=40;
+					dan.mb[i].td.y=2;
+					gotoxy(boss.td.x,boss.td.y);
+			        cout<<boss.hd.a;
+					bmauboss=bmauboss-100;
+				}
+			}
+		}
+	}
+}
+
+void bossdichuyen(MayBay&boss,MayBay&maybay,Dan&dan){
     if(ihuongdichuyenboss!=3){
     	int randboss = rand()%40;
     	if(randboss == 4 ){
@@ -885,6 +947,7 @@ void bossdichuyen(MayBay&boss,MayBay&maybay,Dan&dandich){
 			cout<<"0000000000";
 		}
 		if(boss.td.y==ConW){
+			vachamboss(boss,maybay,dan);
 			gotoxy(boss.td.x,boss.td.y);
 		   	cout<<"          ";
 		   	gotoxy(boss.td.x,boss.td.y-1);
@@ -896,68 +959,6 @@ void bossdichuyen(MayBay&boss,MayBay&maybay,Dan&dandich){
 		}
 	}
    
-}
-
-void vachamboss(MayBay&boss,MayBay&maybay,Dan&dan){
-	int dbossx=boss.td.x-maybay.td.x;
-	int dbossy=boss.td.y-maybay.td.y;
-	if(boss.td.x>=0&&boss.td.x<=ConW&&boss.td.y>=0&&boss.td.y<=ConW){
-		if(mangbaove==0){
-			if(dbossy>=0&&dbossy<=2&&dbossx>=-9&&dbossx<=4){
-			maybaylife--;
-			mangbaove=100;
-			if(maybaylife==0){
-		    	gameover=1;
-			   }
-			if(itrangthaidan>1){
-	       	    itrangthaidan--;
-	       	  }
-		    }
-		}
-	}
-	if(mangbaove>0){
-		mangbaove--;
-	}
-	// va cham dan vs boss
-	for(i=0;i<30;i++){
-		int ddbossx=boss.td.x-dan.mb[i].td.x;
-		int ddbossy=boss.td.y-dan.mb[i].td.y;
-		if(boss.td.x>=0&&boss.td.x<=ConW&&boss.td.y>=0&&boss.td.y<=ConW&&dan.mb[i].td.x>=0&&dan.mb[i].td.x<=ConW+1&&dan.mb[i].td.y>=0&&dan.mb[i].td.y<=ConW){
-			if(itrangthaidan==1){
-				if(ddbossy==0&&ddbossx<=0&&ddbossy>=-9){
-					gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
-		    		cout<<" ";
-					dan.mb[i].td.x=40;
-					dan.mb[i].td.y=2;
-					gotoxy(boss.td.x,boss.td.y);
-			        cout<<boss.hd.a;
-					bmauboss--;
-				}
-			}
-			if(itrangthaidan==2){
-				if(ddbossy==0&&ddbossx<=2&&ddbossy>=-9){
-					gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
-		    		cout<<"   ";
-					dan.mb[i].td.x=40;
-					dan.mb[i].td.y=2;
-					gotoxy(boss.td.x,boss.td.y);
-			        cout<<boss.hd.a;
-					bmauboss=bmauboss-10;
-				}
-			}
-			if(itrangthaidan==3){
-				if(ddbossy==0&&ddbossx<=2&&ddbossy>=-9){
-					gotoxy(dan.mb[i].td.x,dan.mb[i].td.y);
-		    		cout<<"     ";
-					dan.mb[i].td.x=40;
-					dan.mb[i].td.y=2;
-					gotoxy(boss.td.x,boss.td.y);
-			        cout<<boss.hd.a;
-					bmauboss=bmauboss-100;
-				}
-			}
-		}
-	}
 }
 
 void xulyboss(MayBay&maybay,MayBay&boss,Items&items,Dan&dan,Dan&dandich){
@@ -976,7 +977,6 @@ void xulyboss(MayBay&maybay,MayBay&boss,Items&items,Dan&dan,Dan&dandich){
 int main(){
 	ShowCur(0);
 	menu();
-	Nhap3:;
 	//setFullScreen();
 	srand(time(NULL));
 	MayBay maybay;
@@ -1032,26 +1032,12 @@ int main(){
 	}
 	//thua cuoc
 	lost:;
-	system("cls");
-	HienThi(maybay,maybaydich,dan,items,maybaytank,maybayban,dandich,boss);
 	gotoxy(10,13);
 	SetColor(11);
 	cout<<"you lost ";
 	SetColor(15);
 	while(1){
-		SetColor(14);
-		gotoxy(10,15);
-		cout<<"Do you want play again ?";
-		gotoxy(10,16);
-		cout<<"Yes press Y and No press N";
-			if (checkKey(KEY_L)){
-				goto Nhap2;
-		}
-		if (checkKey(KEY_J)){
-				goto Nhap3;
-		}
-		SetColor(15);
+		
 	}
-	Nhap2:;
 	return 0;
 }
