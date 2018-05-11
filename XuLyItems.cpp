@@ -1,0 +1,91 @@
+#include"XuLyItems.h"
+#include"Menu.h"
+#include"Umtil.h"
+
+
+void xulyitems(Items&items,int&isoluongquaivat,int&bodemso){
+	if((isoluongquaivat+1)%30==0){
+		int iitems=rand()%3+1;
+		if(iitems==1){
+			items.h.td.x=rand()%ConW+1;
+			items.h.td.y=0;
+			gotoxy(items.h.td.x,items.h.td.y);
+		    SetColor(10);
+		    cout<<items.h.hd.c;
+		    SetColor(15);
+		}
+		if(iitems==2){
+			items.s.td.x=rand()%ConW+1;
+			items.s.td.y=0;
+			gotoxy(items.s.td.x,items.s.td.y);
+		    SetColor(11);
+		    cout<<items.s.hd.c;
+		    SetColor(15);
+		}
+		if(iitems==3){
+			items.b.td.x=rand()%ConW+1;
+			items.b.td.y=0;
+			gotoxy(items.b.td.x,items.b.td.y);
+		    SetColor(13);
+		    cout<<items.b.hd.c;
+		    SetColor(15);
+		}
+		isoluongquaivat++;
+	}
+	if(bodemso%4==0){
+		if(items.h.td.x>=0&&items.h.td.x<=ConW+1&&items.h.td.y>=0&&items.h.td.y<=ConW){
+		   gotoxy(items.h.td.x,items.h.td.y);
+		   cout<<" ";
+		   items.h.td.y++;
+		   gotoxy(items.h.td.x,items.h.td.y);
+		   SetColor(10);
+		   cout<<items.h.hd.c;
+		   SetColor(15);	
+		}else{
+			if(items.h.td.y==ConW+1){
+			  SetColor(10);
+			  gotoxy(items.h.td.x,items.h.td.y);
+			  putchar(196);
+			  SetColor(15);	
+			}
+			items.h.td.x=50;
+	        items.h.td.y=5;
+		}
+		if(items.s.td.x>=0&&items.s.td.x<=ConW+1&&items.s.td.y>=0&&items.s.td.y<=ConW){
+			gotoxy(items.s.td.x,items.s.td.y);
+			cout<<" ";
+			items.s.td.y++;
+			gotoxy(items.s.td.x,items.s.td.y);
+		    SetColor(11);
+		    cout<<items.s.hd.c;
+		    SetColor(15);
+		}else{
+			if(items.s.td.y==ConW+1){
+			  SetColor(10);
+			  gotoxy(items.s.td.x,items.s.td.y);
+			  putchar(196);
+			  SetColor(15);	
+			}
+			items.s.td.x=50;
+	        items.s.td.y=5;
+		}
+		if(items.b.td.x>=0&&items.b.td.x<=ConW+1&&items.b.td.y>=0&&items.b.td.y<=ConW){
+			gotoxy(items.b.td.x,items.b.td.y);
+			cout<<" ";
+			items.b.td.y++;
+			gotoxy(items.b.td.x,items.b.td.y);
+		    SetColor(13);
+		    cout<<items.b.hd.c;
+		    SetColor(15);
+		}else{
+			if(items.b.td.y==ConW+1){
+			  SetColor(10);
+			  gotoxy(items.b.td.x,items.b.td.y);
+			  putchar(196);
+			  SetColor(15);	
+			}
+			items.b.td.x=50;
+	        items.b.td.y=5;
+		}
+	}
+}
